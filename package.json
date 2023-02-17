@@ -4,24 +4,37 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
-    "dev": "nodemon --exec babel-node index.js"
+    "test": "cross-env NODE_ENV=test jest --testTimeout=10000",
+    "dev": "nodemon --exec babel-node index.js",
+    "start": "nodemon server.js",
+    "db:reset": "pnpm sequelize-cli db:drop && pnpm sequelize-cli db:create && pnpm sequelize-cli db:migrate && pnpm sequelize-cli db:seed:all",
+    "pretest": "cross-env NODE_ENV=test pnpm run db:reset",
+    "db:create:test": "cross-env NODE_ENV=test pnpm sequelize-cli db:create"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.18.1"
+    "express": "^4.18.1",
+    "sequelize": "^6.21.2"
   },
   "devDependencies": {
     "@babel/node": "^7.18.6",
     "@babel/preset-env": "^7.18.6",
     "babel-core": "^6.26.3",
     "babel-jest": "^28.1.2",
+    "cross-env": "^7.0.3",
     "jest": "^28.1.2",
+    "mysql2": "^2.3.3",
     "regenerator-runtime": "^0.13.9",
     "sequelize-cli": "^6.4.1",
     "superagent": "^8.0.0",
     "supertest": "^6.2.4"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ]
   }
 }
